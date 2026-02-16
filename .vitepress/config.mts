@@ -21,7 +21,7 @@ export default defineConfig({
         items: [
           { text: '关于本站', link: '/about' },
           { text: '帮助修改', link: '/help-us' },
-          { text: '贡献者名单' link: '/contributors' },
+          { text: '贡献者名单', link: '/contributors' },
           { text: '贡献者们old', link: '/contributors-old' }
         ]
       }
@@ -50,7 +50,7 @@ export default defineConfig({
         items: [
           { text: '关于', link: '/about' },
           { text: '帮助修改', link: '/help-us' },
-          { text: '贡献者名单' link: '/contributors' },
+          { text: '贡献者名单', link: '/contributors' },
           { text: '贡献者们old', link: '/contributors-old' }
         ]
       }
