@@ -1,38 +1,147 @@
-# Contributors
-
-这个网站从一个想法到一个可以访问的页面，离不开每一位贡献者的努力和帮助。在此，向所有为本项目添砖加瓦的朋友们表示最诚挚的感谢！
-
-## 注意！
-
-我们正在设立一个新的贡献者页面...来自神秘的**波波(AlbertKilonova)**！
-页面正在建设中，稍候完成...
-
-## 核心贡献
-
-### 站长 & 开发者 & 柔情猫娘
-
-- **[NootFond](https://github.com/NootFond )**
-  - **贡献**: 本站的创建者、开发者和主要维护者。负责网站的整体架构、技术实现和长期运营。
-
-### 主要内容贡献者
-
-- **[桉 (AnmingCat)](https://anmingcat.pages.dev/ )**
-  - **贡献**: 网站都是他整合的。提供了大量网站链接的整合与分享。
-
-### 以及...
-
-最重要的 ———— **群友 (U)**
-
-这个网站离不开每一位热心分享网站的**群友 (U)**。
-
-虽然无法将每一位的名字都罗列在此，但你们在社群中的每一次分享、每一个推荐，都是这个网站内容不断丰富的源泉。你们的每一次发现，都可能点亮另一个人的世界。
-
-*（后续考虑一下。。。？）*
-
-**感谢所有的贡献者！**
-
+---
+title: 贡献者名单
+description: 感谢所有为 url-tools 做出贡献的开发者们
+aside: false
+lastUpdated: false
 ---
 
-*（以上排名不分先后）*
+<script setup>
+// Vue 3组合式API
+import { ref, onMounted } from 'vue'
+// VitePress主题组件
+import { VPTeamMembers } from 'vitepress/theme'
 
-**（使用生成式人工智能找Emoji，因为我知道他们专门干这行的）*
+// 响应式数据
+const members = ref([])      // 存储贡献者列表
+const loading = ref(true)    // 加载状态
+
+// 组件挂载后执行
+onMounted(async () => {
+  try {
+    // 从GitHub API获取贡献者数据
+    const response = await fetch('https://api.github.com/repos/NootFond/url-tools/contributors')
+    const data = await response.json()
+    
+    // 映射数据格式，适配VPTeamMembers组件
+    members.value = data.map(user => ({
+      avatar: user.avatar_url,      // GitHub头像
+      name: user.login,              // 用户名
+      title: 'Twine Doc-C Contributor', // 贡献者标题
+      links: [
+        { icon: 'github', link: user.html_url } // GitHub链接
+      ]
+    }))
+  } catch (e) {
+    console.error('获取名单失败了 qwq', e)
+  } finally {
+    loading.value = false  // 结束加载状态
+  }
+})
+</script>
+
+<!-- 页面内容开始 -->
+<div class="contributors-container">
+  <!-- 页头部分 -->
+  <div class="header-section">
+    <h1 class="main-title">贡献者名单</h1>
+    <p class="subtitle">感谢所有为本集和添砖加瓦的朋友们，每一份努力都闪闪发光！qwq</p>
+  </div>
+
+  <!-- 加载状态显示 -->
+  <div v-if="loading" class="loading-box">
+    <div class="loader"></div>
+    <p>正在努力加载名单中，请稍等片刻哦...</p>
+  </div>
+
+  <!-- 加载完成显示贡献者 -->
+  <div v-else class="members-wrapper">
+    <!-- VitePress团队组件，显示贡献者卡片 -->
+    <VPTeamMembers :members="members" />
+  </div>
+
+  <!-- 页脚提示 -->
+  <div class="footer-note">
+    <p>你也想出现在这里吗？没错，就是你，欢迎前往 GitHub 提交 Pull Request！</p>
+  </div>
+</div>
+
+<style scoped>
+/* 主容器样式 */
+.contributors-container {
+  padding: 60px 20px;
+  text-align: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* 渐变标题样式 */
+.main-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--vp-c-brand-1) 0%, var(--vp-c-tip-1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border: none;
+}
+
+/* 副标题样式 */
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--vp-c-text-2);
+  margin-bottom: 50px;
+  letter-spacing: 0.5px;
+}
+
+/* 加载状态样式 */
+.loading-box {
+  padding: 80px;
+  color: var(--vp-c-brand-1);
+}
+
+/* 加载动画 */
+.loader {
+  border: 4px solid var(--vp-c-bg-soft);
+  border-top: 4px solid var(--vp-c-brand-1);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  margin: 0 auto 24px;
+}
+
+/* 旋转动画关键帧 */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 贡献者卡片容器 */
+.members-wrapper {
+  background: var(--vp-c-bg-alt);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+/* 深度选择器修改VitePress组件样式 */
+/* 贡献者头像样式 */
+:deep(.VPTeamMembersItem .avatar) {
+  border-radius: 20px !important;
+  transition: transform 0.3s ease;
+}
+
+/* 悬停效果 */
+:deep(.VPTeamMembersItem:hover .avatar) {
+  transform: scale(1.05) translateY(-5px);
+}
+
+/* 页脚样式 */
+.footer-note {
+  margin-top: 60px;
+  font-size: 0.95rem;
+  color: var(--vp-c-text-3);
+  font-style: italic;
+  opacity: 0.8;
+}
+</style>
