@@ -26,13 +26,13 @@ onMounted(async () => {
     members.value = data.map(user => ({
       avatar: user.avatar_url,      // GitHub头像
       name: user.login,              // 用户名
-      title: 'Twine Doc-C Contributor', // 贡献者标题
+      title: user.login === 'NootFond' ? 'Owner' : 'Contributor', // 贡献者标题
       links: [
         { icon: 'github', link: user.html_url } // GitHub链接
       ]
     }))
   } catch (e) {
-    console.error('获取名单失败了 qwq', e)
+    console.error('获取名单失败了QAQ', e)
   } finally {
     loading.value = false  // 结束加载状态
   }
